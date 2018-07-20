@@ -1,0 +1,5 @@
+# Slackbot
+
+```bash
+./launch
+```
