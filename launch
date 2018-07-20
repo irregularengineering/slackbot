@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# Pull docker image, start it, and enter a bash session
+#
+# Or, optionally, pass -b to build locally
+#
+# Usage:
+#  ./launch
+#  ./launch -b  # to build locally rather than pulling image from cloud
+
+if [ -n "$(docker ps -q -f name=slackbot)" ]; then
+    echo "Stopping slackbot"
+    echo "Stopped $(docker stop slackbot)"
+fi
+
+build_image="0"
+while getopts 'b' option; do
+    case ${option} in
+        b) build_image="1" ;;
+    esac
+done
+
+if [ "$build_image" == "1" ]; then
+    docker build . --tag irregularengineering/slackbot:latest
+else
+    docker pull irregularengineering/slackbot:latest
+fi
+
+export CIRCLE_SHA1=latest
+docker run -ti -v "$(pwd):/opt/slackbot" irregularengineering/slackbot:latest bash
