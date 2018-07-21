@@ -1,3 +1,8 @@
+# pylint: disable=no-self-use,too-many-ancestors
+"""
+Example Plugin
+"""
+
 import random
 
 from errbot import BotPlugin, botcmd
@@ -18,7 +23,7 @@ class Example(BotPlugin):
     """
 
     @botcmd  # flags a command
-    def hello(self, msg, args):  # a command callable with !tryme
+    def hello(self, _msg, _args):  # a command callable with !tryme
         """
         Execute to check if Errbot responds to command.
         Feel free to tweak me to experiment with Errbot.
