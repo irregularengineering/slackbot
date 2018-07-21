@@ -1,0 +1,10 @@
+version: "3.3"
+
+services:
+  slackbot:
+    container_name: slackbot
+    image: irregularengineering/slackbot:$CIRCLE_SHA1
+    volumes:
+      - ~/.secrets:/root/.secrets
+      - .:/opt/slackbot
+    command: bash -c "errbot -d && tail -f /dev/null"

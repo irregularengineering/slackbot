@@ -1,5 +1,5 @@
 # Slackbot
 
 ```bash
-./launch
+./launch -b
 ```
