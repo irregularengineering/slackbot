@@ -27,4 +27,5 @@ else
 fi
 
 export CIRCLE_SHA1=latest
-docker run -ti -v "$(pwd):/opt/slackbot" irregularengineering/slackbot:latest bash
+docker-compose up -d
+docker exec -ti slackbot bash

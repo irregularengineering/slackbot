@@ -4,6 +4,10 @@ Slackbot configuration
 
 import logging
 
+from secrets import Secrets
+
+secrets = Secrets()
+
 BACKEND = 'Slack'
 BOT_DATA_DIR = './data'
 BOT_EXTRA_PLUGIN_DIR = './plugins'
@@ -12,7 +16,7 @@ BOT_LOG_FILE = BOT_DATA_DIR + '/err.log'
 BOT_LOG_LEVEL = logging.INFO
 BOT_ASYNC = True
 BOT_ASYNC_POOLSIZE = 10
-BOT_IDENTITY = {'token': 'xxx'}
+BOT_IDENTITY = {'token': secrets.get('Slackbot', 'token')}
 BOT_ADMINS = ('@mattreed79', '@paulkarayan')
 BOT_PREFIX = '!'
 BOT_ALT_PREFIXES = ('@bender',)
