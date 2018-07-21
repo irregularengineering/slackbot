@@ -15,5 +15,5 @@ pytest -vv tests
 ## Lint
 
 ```bash
-pylint plugins tests
+pylint slackbot tests
 ```

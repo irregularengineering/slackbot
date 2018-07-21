@@ -7,7 +7,7 @@ import os
 
 import pytest
 
-from secrets import Secrets, SecretNotFoundException
+from slackbot.utils.secrets import Secrets, SecretNotFoundException
 
 
 @pytest.fixture

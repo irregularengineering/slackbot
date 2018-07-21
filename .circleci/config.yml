@@ -14,7 +14,7 @@ jobs:
     steps:
       - run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
       - run: docker pull irregularengineering/slackbot:$CIRCLE_SHA1
-      - run: docker run irregularengineering/slackbot:$CIRCLE_SHA1 pylint plugins tests
+      - run: docker run irregularengineering/slackbot:$CIRCLE_SHA1 pylint slackbot tests
 
   test:
     machine: true

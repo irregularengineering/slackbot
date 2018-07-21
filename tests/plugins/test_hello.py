@@ -3,7 +3,7 @@
 Test Hello plugin
 """
 
-from plugins import hello
+from slackbot.plugins import hello
 
 pytest_plugins = ["errbot.backends.test"]
 extra_plugin_dir = '.'
