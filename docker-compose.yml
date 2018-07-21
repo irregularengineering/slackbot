@@ -4,6 +4,8 @@ services:
   slackbot:
     container_name: slackbot
     image: irregularengineering/slackbot:$CIRCLE_SHA1
+    environment:
+      - Slackbot_token
     volumes:
       - ~/.secrets:/root/.secrets
       - .:/opt/slackbot
