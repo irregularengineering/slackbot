@@ -1,6 +1,6 @@
 [Core]
-Name = Example
-Module = example
+Name = Hello
+Module = hello
 
 [Documentation]
 Description = This is a simple plugin example to get you started.
