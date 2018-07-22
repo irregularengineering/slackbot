@@ -3,7 +3,7 @@ Name = Hello
 Module = hello
 
 [Documentation]
-Description = This is a simple plugin example to get you started.
+Description = Say hello to the slackbot
 
 [Python]
 Version = 3
