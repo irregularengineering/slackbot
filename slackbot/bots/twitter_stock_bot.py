@@ -6,7 +6,6 @@ Twitter stock sentiment analyzer
 Usage:
     stock_bot = StockBot()
     print(stock_bot.analyze_sentiment('tsla'))
-    print(stock_bot.analyze_sentiment('fb', days=3))
 """
 
 from typing import List, NamedTuple
