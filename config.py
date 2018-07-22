@@ -4,13 +4,13 @@ Slackbot configuration
 
 import logging
 
-from secrets import Secrets
+from slackbot.utils.secrets import Secrets
 
 secrets = Secrets()
 
 BACKEND = 'Slack'
 BOT_DATA_DIR = './data'
-BOT_EXTRA_PLUGIN_DIR = './plugins'
+BOT_EXTRA_PLUGIN_DIR = './slackbot/plugins'
 CORE_PLUGINS = ('ACLs', 'Help', 'Health', 'Utils')
 BOT_LOG_FILE = BOT_DATA_DIR + '/err.log'
 BOT_LOG_LEVEL = logging.INFO

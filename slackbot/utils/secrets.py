@@ -13,7 +13,9 @@ class SecretNotFoundException(Exception):
     Thrown when secret does not exist in environment variables or secrets file
     """
     def __init__(self, env_var_name):
-        message = 'Secret not found in environment variables or secrets file: {}'.format(env_var_name)
+        message = 'Secret not found in environment variables or secrets file: {}'.format(
+            env_var_name
+        )
         super(SecretNotFoundException, self).__init__(message)
 
 

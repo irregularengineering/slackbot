@@ -1,0 +1,54 @@
+version: 2
+
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+      - run: docker build . --tag irregularengineering/slackbot:$CIRCLE_SHA1
+      - run: docker push irregularengineering/slackbot:$CIRCLE_SHA1
+
+  lint:
+    machine: true
+    steps:
+      - run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+      - run: docker pull irregularengineering/slackbot:$CIRCLE_SHA1
+      - run: docker run irregularengineering/slackbot:$CIRCLE_SHA1 pylint slackbot tests
+
+  test:
+    machine: true
+    steps:
+      - checkout
+      - run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+      - run: docker pull irregularengineering/slackbot:$CIRCLE_SHA1
+      - run: docker-compose up -d
+      - run: sleep 10
+      - run: docker exec slackbot pytest -vv tests
+      - run: docker-compose down
+
+  ship:
+    machine: true
+    steps:
+      - run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+      - run: docker pull irregularengineering/slackbot:$CIRCLE_SHA1
+      - run: docker tag irregularengineering/slackbot:$CIRCLE_SHA1 irregularengineering/slackbot:latest
+      - run: docker push irregularengineering/slackbot:latest
+
+workflows:
+  version: 2
+  slackbot_ci:
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - ship:
+          filters:
+            branches:
+              only: master
+          requires:
+            - build

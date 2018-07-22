@@ -1,0 +1,9 @@
+[Core]
+Name = Hello
+Module = hello
+
+[Documentation]
+Description = Say hello to the slackbot
+
+[Python]
+Version = 3
