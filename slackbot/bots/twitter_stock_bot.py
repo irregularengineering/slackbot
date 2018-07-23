@@ -27,7 +27,7 @@ class TwitterStockBot(object):
     def __init__(self):
         self.twitter_api = TwitterApi()
         self.stock_api = StockApi()
-        self.sentiment_analytzer = SentimentAnalyzer()
+        self.sentiment_analyzer = SentimentAnalyzer()
 
     def analyze_sentiment(self, symbol: str) -> str:
         """
@@ -37,23 +37,12 @@ class TwitterStockBot(object):
         :return: result as str
         """
         quote = self.stock_api.get_stock_info(symbol)
-        tweets = self._collect_tweets(symbol)
-        return self.build_sentiment_message(quote, tweets)
-
-    def _collect_tweets(self, symbol: str) -> List[TweetResult]:
-        """
-        Query Twitter for tweets involving stock ticker symbol and return list of cleaned tweets
-        with sentiment
-
-        :param symbol: stock symbol as str
-        :return: list of instances of TweetResult
-        """
         results = list()
         for tweet in self.twitter_api.get_stock_tweets(symbol):
             clean_tweet = self.twitter_api.clean_tweet(tweet)
-            sentiment = self.sentiment_analytzer.get_sentiment(clean_tweet)
+            sentiment = self.sentiment_analyzer.get_sentiment(clean_tweet)
             results.append(TweetResult(raw=tweet, clean=clean_tweet, sentiment=sentiment))
-        return results
+        return self.build_sentiment_message(quote, results)
 
     @staticmethod
     def build_sentiment_message(stock_info: StockInfo, tweets: List[TweetResult]) -> str:
@@ -69,25 +58,25 @@ class TwitterStockBot(object):
             tweet_message = '({:,.0f} tweet{} averaging {}{:.0f}% sentiment)'.format(
                 len(tweets),
                 string_utils.pluralize(len(tweets)),
-                TwitterStockBot.get_sentiment_direction(sentiment),
+                TwitterStockBot.get_sentiment_polarity(sentiment),
                 100. * sentiment
             )
         else:
             tweet_message = '(no tweets)'
         return '{} is {} {:,.2f}% {}'.format(
             stock_info.name,
-            TwitterStockBot.get_return_direction(stock_info.one_day_return),
+            TwitterStockBot.get_return_polarity(stock_info.one_day_return),
             100. * stock_info.one_day_return,
             tweet_message
         )
 
     @staticmethod
-    def get_return_direction(percent_return: float) -> str:
+    def get_return_polarity(percent_return: float) -> str:
         """
-        Construct string describing direction of return
+        Construct string describing polarity of return
 
         :param percent_return: as float
-        :return: str value of direction
+        :return: str value of polarity
         """
         if percent_return > 0.:
             return 'up'
@@ -96,12 +85,12 @@ class TwitterStockBot(object):
         return 'unchanged at'
 
     @staticmethod
-    def get_sentiment_direction(sentiment: float) -> str:
+    def get_sentiment_polarity(sentiment: float) -> str:
         """
-        Construct string describing direction of sentiment
+        Construct string describing polarity of sentiment
 
         :param sentiment: as float
-        :return: str value of direction
+        :return: str value of polarity
         """
         if sentiment > 0.:
             return '+'

@@ -24,15 +24,15 @@ def tweets():
 
 
 def test_get_sentiment_direction():
-    assert TwitterStockBot.get_sentiment_direction(0.8) == '+'
-    assert TwitterStockBot.get_sentiment_direction(-0.8) == '-'
-    assert TwitterStockBot.get_sentiment_direction(0.) == ''
+    assert TwitterStockBot.get_sentiment_polarity(0.8) == '+'
+    assert TwitterStockBot.get_sentiment_polarity(-0.8) == '-'
+    assert TwitterStockBot.get_sentiment_polarity(0.) == ''
 
 
 def test_get_return_direction():
-    assert TwitterStockBot.get_return_direction(0.03) == 'up'
-    assert TwitterStockBot.get_return_direction(-0.03) == 'down'
-    assert TwitterStockBot.get_return_direction(0.) == 'unchanged at'
+    assert TwitterStockBot.get_return_polarity(0.03) == 'up'
+    assert TwitterStockBot.get_return_polarity(-0.03) == 'down'
+    assert TwitterStockBot.get_return_polarity(0.) == 'unchanged at'
 
 
 def test_build_sentiment_message(stock_info, tweets):
