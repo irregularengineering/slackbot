@@ -64,15 +64,21 @@ class TwitterStockBot(object):
         :param tweets: list of TweetResults
         :return: summary string of stock name, percent change, and sentiment analysis
         """
-        sentiment = float(np.mean([tweet.sentiment for tweet in tweets]))
-        return '{} is {} {:,.2f}% ({:,.0f} tweet{} averaging {}{:.0f}% sentiment)'.format(
+        if tweets:
+            sentiment = float(np.mean([tweet.sentiment for tweet in tweets]))
+            tweet_message = '({:,.0f} tweet{} averaging {}{:.0f}% sentiment)'.format(
+                len(tweets),
+                string_utils.pluralize(len(tweets)),
+                TwitterStockBot.get_sentiment_direction(sentiment),
+                100. * sentiment
+            )
+        else:
+            tweet_message = '(no tweets)'
+        return '{} is {} {:,.2f}% {}'.format(
             stock_info.name,
             TwitterStockBot.get_return_direction(stock_info.one_day_return),
             100. * stock_info.one_day_return,
-            len(tweets),
-            string_utils.pluralize(len(tweets)),
-            TwitterStockBot.get_sentiment_direction(sentiment),
-            100. * sentiment
+            tweet_message
         )
 
     @staticmethod
