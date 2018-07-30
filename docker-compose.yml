@@ -6,6 +6,10 @@ services:
     image: irregularengineering/slackbot:$CIRCLE_SHA1
     environment:
       - Slackbot_token
+      - Twitter_api_key
+      - Twitter_api_secret
+      - Twitter_oauth_token
+      - Twitter_oauth_secret
     volumes:
       - ~/.secrets:/root/.secrets
       - .:/opt/slackbot

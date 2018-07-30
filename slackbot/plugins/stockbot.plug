@@ -1,0 +1,9 @@
+[Core]
+Name = StockBot
+Module = stock_bot
+
+[Documentation]
+Description = Analyze sentiment of tweets about stocks
+
+[Python]
+Version = 3

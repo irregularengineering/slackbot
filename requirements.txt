@@ -2,3 +2,8 @@ pylint==1.8.1
 pytest==3.6.3
 errbot==5.2.0
 slackclient==1.2.1
+iexfinance==0.3.4
+twitter==1.18.0
+textblob==0.15.1
+numpy==1.14.5
+pytz==2018.5

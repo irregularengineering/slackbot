@@ -9,7 +9,7 @@
 ## Test
 
 ```bash
-pytest -vv tests
+py.test
 ```
 
 ## Lint
