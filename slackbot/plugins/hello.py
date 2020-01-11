@@ -10,9 +10,9 @@ from errbot import BotPlugin, re_botcmd
 
 
 RESPONSES = [
-    'Fuck off!',
-    'Shut up!',
-    'Get bent!'
+    'Good day!',
+    'Hello!',
+    'Yo!'
 ]
 
 
