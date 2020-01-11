@@ -6,8 +6,10 @@ Look up companies, prices, returns, etc.
 
 from typing import NamedTuple
 
-from iexfinance import Stock
-from iexfinance.utils.exceptions import IEXSymbolError
+from iexfinance.stocks import Stock
+from iexfinance.utils.exceptions import IEXQueryError
+
+from slackbot.utils.secrets import Secrets
 
 StockInfo = NamedTuple('StockInfo', [('symbol', str), ('name', str), ('one_day_return', float)])
 
@@ -25,8 +27,11 @@ class StockApi(object):
     """
     Request information about a stock symbol such as company name, price, return, etc.
     """
-    @staticmethod
-    def get_stock_info(symbol: str) -> StockInfo:
+    def __init__(self):
+        secrets = Secrets()
+        self.token = secrets.get('IEX', 'token')
+
+    def get_stock_info(self, symbol: str) -> StockInfo:
         """
         Fetch quote given stock ticker symbol
 
@@ -34,8 +39,8 @@ class StockApi(object):
         :return: instance of StockInfo
         """
         try:
-            quote = Stock(symbol).get_quote()
-        except IEXSymbolError:
+            quote = Stock(symbol, token=self.token).get_quote()
+        except IEXQueryError:
             raise SymbolNotFoundError(symbol)
         else:
             return StockInfo(symbol.upper(), quote['companyName'], quote['changePercent'])

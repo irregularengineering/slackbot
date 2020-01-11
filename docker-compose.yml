@@ -10,6 +10,7 @@ services:
       - Twitter_api_secret
       - Twitter_oauth_token
       - Twitter_oauth_secret
+      - IEX_token
     volumes:
       - ~/.secrets:/root/.secrets
       - .:/opt/slackbot
