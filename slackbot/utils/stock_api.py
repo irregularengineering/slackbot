@@ -29,7 +29,7 @@ class StockApi(object):
     """
     def __init__(self):
         secrets = Secrets()
-        self.token = secrets.get('IEX', 'Token')
+        self.token = secrets.get('IEX', 'token')
 
     def get_stock_info(self, symbol: str) -> StockInfo:
         """
