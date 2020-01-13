@@ -17,9 +17,9 @@ BOT_LOG_LEVEL = logging.INFO
 BOT_ASYNC = True
 BOT_ASYNC_POOLSIZE = 10
 BOT_IDENTITY = {'token': secrets.get('Slackbot', 'token')}
-BOT_ADMINS = ('@mattreed79', '@paulkarayan')
+BOT_ADMINS = ('@paul')
 BOT_PREFIX = '!'
-BOT_ALT_PREFIXES = ('@bender',)
+BOT_ALT_PREFIXES = ('@bender','@jiraed')
 ACCESS_CONTROLS = {
     'restart': {'allowusers': BOT_ADMINS},
     'status': {'allowusers': BOT_ADMINS},

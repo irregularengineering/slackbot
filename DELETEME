@@ -1,0 +1,4 @@
+tail -f /opt/slackbot/data/err.log
+
+
+cat /opt/slackbot/data/err.log | grep -C 5 jira

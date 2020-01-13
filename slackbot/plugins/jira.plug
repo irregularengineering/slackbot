@@ -1,0 +1,9 @@
+[Core]
+Name = Jira
+Module = jira
+
+[Python]
+Version = 3
+
+[Documentation]
+Description = errbot plugin for working with Atlassian JIRA and parsin boards

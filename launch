@@ -21,7 +21,7 @@ while getopts 'b' option; do
 done
 
 if [ "$build_image" == "1" ]; then
-    docker build . --tag irregularengineering/slackbot:latest
+    docker build . --tag irregularengineering/slackbot:latest --no-cache
 else
     docker pull irregularengineering/slackbot:latest
 fi

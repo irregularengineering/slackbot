@@ -7,3 +7,15 @@ twitter==1.18.0
 textblob==0.15.1
 numpy==1.14.5
 pytz==2018.5
+
+
+# jira bot
+jira==2.0.0
+oauth2
+requests
+requests-oauthlib
+IPython
+filemagic
+tlslite
+PyCrypto
+# ???
