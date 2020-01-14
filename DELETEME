@@ -2,3 +2,10 @@ tail -f /opt/slackbot/data/err.log
 
 
 cat /opt/slackbot/data/err.log | grep -C 5 jira
+
+
+# can't restart process. isnt a service. 
+ps -ef
+kill -9 16
+ps -ef
+errbot
