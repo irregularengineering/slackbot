@@ -232,9 +232,9 @@ class Jira(BotPlugin):
             )
 
         if re.findall(r"(\d+)",msg.body):
-            lottery_ticket = random.randint(1,10)
+            lottery_ticket = random.randint(1,1000)
 
-            if lottery_ticket >= 5:
+            if lottery_ticket >= 998:
                 response = "<3 @pk"
                 self.send_card(body=response,
                   to=msg.frm,
