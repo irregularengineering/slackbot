@@ -7,6 +7,7 @@ import logging
 import json
 import re
 import os
+import random
 
 from slackbot.utils.secrets import Secrets
 
@@ -230,9 +231,14 @@ class Jira(BotPlugin):
                   title=issue.fields.summary,
             )
 
-        if msg.body.find('cookie') != -1:
-            response = "me want cookie"
-            self.send(msg.frm,
-                  response,
+        if re.findall(r"(\d+)",msg.body):
+            lottery_ticket = random.randint(1,10)
+
+            if lottery_ticket >= 5:
+                response = "<3 @pk"
+                self.send_card(body=response,
+                  to=msg.frm,
                   in_reply_to=msg,
-                  groupchat_nick_reply=True)
+                  title="That's a Numberwang",
+                  image="https://vignette.wikia.nocookie.net/thatmitchellandwebb/images/1/13/Numberwang.jpg"
+                )
