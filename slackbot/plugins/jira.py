@@ -144,7 +144,7 @@ class Jira(BotPlugin):
                   groupchat_nick_reply=True)
         return ''
 
-
+    # TODO: refactor
     def _verify_is_jira(self, msg):
         matches = []
         regexes = []
@@ -185,8 +185,6 @@ class Jira(BotPlugin):
             response = 'issue {0} not found.'.format(issue)
         self.send(msg.frm,
                   response,
-                  # this would make it a reply to the message...
-                  # in_reply_to=msg,
                   groupchat_nick_reply=True)
 
     @botcmd(split_args_with=' ')
@@ -206,14 +204,30 @@ class Jira(BotPlugin):
         if not self.config:
             return
 
+        # TODO: refactor
         if self._verify_is_jira(msg):
-            response = "me want jira response"
+            issue = self._verify_is_jira(msg)
+            if issue is '':
+                return
+            jira = self.jira_connect
+            try:
+                issue = jira.issue(issue)
+
+                response = '({4}) "{0}" (by {2})\nassigned to {1} - {3}'.format(
+                    issue.fields.summary,
+                    issue.fields.assignee,
+                    issue.fields.reporter,
+                    issue.permalink(),
+                    issue.fields.status.name
+                )
+
+            except JIRAError:
+                response = 'issue {0} not found.'.format(issue)
 
             self.send_card(body=response,
                   to=msg.frm,
                   in_reply_to=msg,
-                  summary="this is summary",
-                  title="this is a title",
+                  title=issue.fields.summary,
             )
 
         if msg.body.find('cookie') != -1:
