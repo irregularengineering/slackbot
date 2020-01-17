@@ -120,6 +120,7 @@ class Jira(BotPlugin):
         return None
 
     def _verify_issue_id(self, msg, issue):
+        issue = issue.lower()
         if issue == '':
             self.send(msg.frm,
                       'issue id cannot be empty',
@@ -171,7 +172,7 @@ class Jira(BotPlugin):
         self.send(msg.frm,
                   response,
                   # this would make it a reply to the message...
-                  #in_reply_to=msg,
+                  # in_reply_to=msg,
                   groupchat_nick_reply=True)
 
     @botcmd(split_args_with=' ')
@@ -188,8 +189,15 @@ class Jira(BotPlugin):
 
     def callback_message(self, msg):
         """A callback which responds to mention of JIRA issues"""
-        if self.config:
-            """not implemented yet"""
+        if not self.config:
+            return
+
+        if msg.body.find('cookie') != -1:
+            response = "me want cookie"
+            self.send(msg.frm,
+                  response,
+                  in_reply_to=msg,
+                  groupchat_nick_reply=True)
 
     @botcmd(split_args_with=';')
     def jira_repos(self, msg, args):
