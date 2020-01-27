@@ -166,7 +166,8 @@ class Jira(BotPlugin):
 
     @botcmd(split_args_with=' ')
     def jira(self, msg, args):
-        """Returns the subject of the issue and a link to it."""
+        """Returns the subject of the issue and a link to it.
+            !jira test-123"""
         issue = self._verify_valid_issue_id(msg, args.pop(0))
         if issue is '':
             return
@@ -192,13 +193,43 @@ class Jira(BotPlugin):
     def jira_create(self, msg, args):
         """Creates a new issue"""
         """not implemented yet"""
+
+        jira = self.jira_connect
+        try:
+            issue_dict = {
+                    'project': "SHAN",
+                    'summary': 'New issue from jira-python',
+                    'description': 'Look into this one',
+                    'issuetype': {'name': 'Task'},
+                    }
+
+            new_issue = jira.create_issue(fields=issue_dict)
+
+            response = '({4}) "{0}" (by {2})\nassigned to {1} - {3}'.format(
+                new_issue.fields.summary,
+                new_issue.fields.assignee,
+                new_issue.fields.reporter,
+                new_issue.permalink(),
+                new_issue.fields.status.name
+            )
+
+        except JIRAError as e:
+            response = 'we have error: {0}'.format(e)
+            return
+
+        self.send(msg.frm,
+                  response,
+                  groupchat_nick_reply=True)
+
         return "will create an issue"
 
     @botcmd(split_args_with=' ')
     def jira_assign(self, msg, args):
-        """(Re)assigns an issue to a given user"""
-        """not implemented yet"""
-        return "will (re)assign an issue"
+        """(Re)assigns an issue to a given user
+            !jira assign infra-1033 pk"""
+
+    # issue.update(assignee={'name': 'new_user'})
+        return "not implemented"
 
     def callback_message(self, msg):
         """A callback which responds to mention of JIRA issues"""
