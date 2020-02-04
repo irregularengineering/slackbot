@@ -189,14 +189,54 @@ class Jira(BotPlugin):
                   groupchat_nick_reply=True)
 
     @botcmd(split_args_with=' ')
-    def jira_create(self, msg, args):
-        """Creates a new issue"""
+    def jira_new(self, msg, args):
+        """
+        Creates a new issue
+        !jira new <project> <summary>
+        !jira new infra "here's what i pasted"
+        """
 
         jira = self.jira_connect
+        summary = ' '.join(args[1:])
 
         try:
-            issue = jira.create_issue(project='INFRA', summary='New issue from jira-python',
-                              description='Look into this one', issuetype={'name': 'Task'})
+            issue = jira.create_issue(project=args[0].upper(), 
+                                      summary=summary,
+                                      issuetype={'name': 'Task'}
+                                      )
+            response = '({4}) "{0}" (by {2})\nassigned to {1} - {3}'.format(
+                issue.fields.summary,
+                issue.fields.assignee,
+                issue.fields.reporter,
+                issue.permalink(),
+                issue.fields.status.name
+            )
+
+        except JIRAError as e:
+            response = 'issue creation not working. {}'.format(e)
+
+        self.send(msg.frm,
+                  response,
+                  groupchat_nick_reply=True)
+
+    @botcmd(split_args_with=' ')
+    def jira_assign(self, msg, args):
+        """
+        (Re)assigns an issue to a given user
+        !jira assign <ticket> <user>
+        """
+
+        issue = self._verify_valid_issue_id(msg, args.pop(0))
+        if issue is '':
+            return
+        jira = self.jira_connect
+
+        ## TODO: check that user exists/is valid. right now we just assume...
+
+        try:
+            jira.assign_issue(issue, args.pop(0))
+
+            issue = jira.issue(issue)
 
             response = '({4}) "{0}" (by {2})\nassigned to {1} - {3}'.format(
                 issue.fields.summary,
@@ -207,17 +247,12 @@ class Jira(BotPlugin):
             )
 
         except JIRAError as e:
-            response = 'issue not working. {}'.format(e)
+            response = 'issue assignment not working. {}'.format(e)
 
         self.send(msg.frm,
                   response,
                   groupchat_nick_reply=True)
 
-    @botcmd(split_args_with=' ')
-    def jira_assign(self, msg, args):
-        """(Re)assigns an issue to a given user"""
-        """not implemented yet"""
-        return "will (re)assign an issue"
 
     def callback_message(self, msg):
         """A callback which responds to mention of JIRA issues"""
