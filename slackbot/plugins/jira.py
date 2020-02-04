@@ -191,8 +191,27 @@ class Jira(BotPlugin):
     @botcmd(split_args_with=' ')
     def jira_create(self, msg, args):
         """Creates a new issue"""
-        """not implemented yet"""
-        return "will create an issue"
+
+        jira = self.jira_connect
+
+        try:
+            issue = jira.create_issue(project='INFRA', summary='New issue from jira-python',
+                              description='Look into this one', issuetype={'name': 'Task'})
+
+            response = '({4}) "{0}" (by {2})\nassigned to {1} - {3}'.format(
+                issue.fields.summary,
+                issue.fields.assignee,
+                issue.fields.reporter,
+                issue.permalink(),
+                issue.fields.status.name
+            )
+
+        except JIRAError as e:
+            response = 'issue not working. {}'.format(e)
+
+        self.send(msg.frm,
+                  response,
+                  groupchat_nick_reply=True)
 
     @botcmd(split_args_with=' ')
     def jira_assign(self, msg, args):
@@ -228,7 +247,7 @@ class Jira(BotPlugin):
             self.send_card(body=response,
                   to=msg.frm,
                   in_reply_to=msg,
-                  title=issue.fields.summary,
+                  title=issue.fields.summary
             )
 
         if re.findall(r"(\d+)",msg.body):
